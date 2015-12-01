@@ -1,20 +1,39 @@
 var express = require('express');
 var router = express.Router();
+var models = require("../models");
 
 var movies = [
-  'John Cena',
-  'Ryan Stanley',
-  'John Cena',
-  'Ryan Stanley',
-  'John Cena',
-  'Ryan Stanley',
-  'John Cena',
-  'Ryan Stanley'
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' },
+  { movie_name: 'John Cena' }
 ];
 
-/* GET home page. */
+// GET home page.
 router.get('/', function(req, res, next) {
-  res.render('index', { movies: movies });
+  models.sessions.findAll().then(function(sessions) {
+    // res.render('index', { movies: sessions });
+    res.render('index', { movies: movies });
+  });
+});
+
+// GET movie page.
+router.get('/:movie_name', function(req, res, next) {
+  var movie_name = req.params.movie_name
+
+  models.sessions.findAll({
+    where: {
+      movie_name: movie_name
+    }
+  }).then(function(sessions) {
+    // res.render('index', { movies: sessions });
+    res.render('index', { movies: movies });
+  });
 });
 
 module.exports = router;
