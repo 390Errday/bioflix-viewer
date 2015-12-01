@@ -6,6 +6,8 @@ a {
   color: #00B7FF;
 }
 
+/*Make the view-source button permanent*/
+
 #view-source {
   position: fixed;
   display: block;
@@ -14,4 +16,30 @@ a {
   margin-right: 40px;
   margin-bottom: 40px;
   z-index: 900;
+}
+
+/*Movie cards*/
+
+.card-movie.mdl-card {
+  width: 256px;
+  height: 256px;
+  background: url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') center / cover;
+}
+.card-movie > .mdl-card__actions {
+  height: 52px;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+}
+.card-movie__filename {
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/*Center all cells, and thus cards*/
+
+.mdl-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
