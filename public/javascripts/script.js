@@ -11,6 +11,6 @@ var config = {
     delay: 200
 };
 
-// Waves.attach('.card-movie', 'waves-light'); TODO: do we want waves light?
-Waves.attach('.card-movie');
+// Waves.attach('.card-movie', ['waves-float','waves-light']); TODO: do we want waves light?
+Waves.attach('.card-movie', 'waves-float');
 Waves.init(config);

@@ -2,8 +2,9 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
-a {
-  color: #00B7FF;
+a.mdl-layout-title {
+  text-decoration:none;
+  color: white;
 }
 
 /*Make the view-source button permanent*/
