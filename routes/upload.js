@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var models = require("../models");
 
 // POST new biometric data.
 router.post('/', function(req, res, next) {
@@ -14,7 +15,7 @@ router.post('/', function(req, res, next) {
     gsr_times: req.body.gsr_times
   };
 
-  models.User.create(user).then(function(data) {
+  models.sessions.create(session).then(function(data) {
     res.send(data);
   }, function(err) {              // session creation failed :(
     res.status(700).send(err);
