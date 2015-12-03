@@ -31,8 +31,7 @@ router.get('/:movie_name', function(req, res, next) {
       movie_name: movie_name
     }
   }).then(function(sessions) {
-    // res.render('movie', { sessions: sessions });
-    res.render('index', { movies: movies });
+    res.render('movie', { sessions: sessions });
   });
 });
 
