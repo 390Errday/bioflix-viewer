@@ -1,0 +1,85 @@
+<div class="graph-section">
+  <div class="card-graph mdl-card mdl-shadow--2dp">
+    <div id="container"></div>
+  </div>
+</div>
+
+<script>
+var socket = io.connect('http://localhost:3000');
+socket.on('news', function (data) {
+  console.log(data);
+  socket.emit('my other event', { my: 'data' });
+});
+
+$(function () {
+  $('#container').highcharts({
+    chart: {
+      zoomType: 'xy'
+    },
+    title: {
+      text: '{{movie.movie_name}}'
+    },
+    tooltip: {
+      shared: true,
+      crosshairs: true
+    },
+    xAxis: [{
+      labels: {
+        format: '{value:%H:%M:%S}',
+        rotation: 45,
+        align: 'left'
+      },
+      crosshair: true
+    }],
+    yAxis: [{ // Primary yAxis
+      labels: {
+        format: '{value} bpm',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
+      },
+      title: {
+        text: 'Heart Rate',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
+      }
+    }, { // Secondary yAxis
+      title: {
+        text: 'Galvanic Skin Response',
+        style: {
+          color: Highcharts.getOptions().colors[4]
+        }
+      },
+      labels: {
+        format: '{value} µS',
+        style: {
+          color: Highcharts.getOptions().colors[4]
+        }
+      },
+      opposite: true
+    }],
+    tooltip: {
+      shared: true
+    },
+    series: [{
+      name: 'Heart Rate',
+      type: 'line',
+      data: {{sessions.hr}},
+      tooltip: {
+        valueSuffix: ' bpm'
+      },
+      color: Highcharts.getOptions().colors[5]
+    }, {
+      name: 'Galvanic Skin Response',
+      type: 'line',
+      yAxis: 1,
+      data: {{sessions.gsr}},
+      tooltip: {
+        valueSuffix: ' µS'
+      },
+      color: Highcharts.getOptions().colors[4]
+    }]
+  });
+});
+</script>
