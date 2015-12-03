@@ -24,7 +24,7 @@ router.get('/:movie_name', function(req, res, next) {
       movie.getSessions().then(function(db_sessions) {
         res.render('movie', {
           movie: movie.get({plain: true}),
-          sessions: db_sessions[0].get({plain: true})
+          sessions: (db_sessions.length > 0) ? db_sessions[0].get({plain: true}) : undefined
         });
       }, function(err) {                          // session search failed
         handleError('Search for ' + movie.movie_name + '\'s sessions failed! :(', err, res);
