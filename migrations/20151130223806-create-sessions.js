@@ -9,7 +9,8 @@ module.exports = {
       },
       start_time: {
         allowNull: false,
-        type: Sequelize.TEXT
+        type: Sequelize.TEXT,
+        primaryKey: true
       },
       end_time: {
         allowNull: false,
