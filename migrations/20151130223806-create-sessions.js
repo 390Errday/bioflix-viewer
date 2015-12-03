@@ -2,17 +2,6 @@
 module.exports = {
   up: function(queryInterface, Sequelize) {
     return queryInterface.createTable('sessions', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      movie_name: {
-        allowNull: false,
-        type: DataTypes.TEXT,
-        primaryKey: true
-      },
       viewer_name: {
         allowNull: false,
         type: DataTypes.TEXT,
@@ -20,25 +9,17 @@ module.exports = {
       },
       start_time: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER
       },
       end_time: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.INTEGER
       },
-      hr_data: {
+      hr: {
         allowNull: false,
         type: Sequelize.TEXT
       },
-      hr_times: {
-        allowNull: false,
-        type: Sequelize.TEXT
-      },
-      gsr_data: {
-        allowNull: false,
-        type: Sequelize.TEXT
-      },
-      gsr_times: {
+      gsr: {
         allowNull: false,
         type: Sequelize.TEXT
       },

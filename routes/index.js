@@ -26,13 +26,33 @@ router.get('/', function(req, res, next) {
 router.get('/:movie_name', function(req, res, next) {
   var movie_name = req.params.movie_name
 
-  models.sessions.findAll({
+  models.movies.findOne({
     where: {
       movie_name: movie_name
     }
-  }).then(function(sessions) {
-    res.render('movie', { sessions: sessions });
+  }).then(function(movie) {
+    if(movie === null) {
+      handleError(movie_name + ' does not exist in the database! :(', undefined, res);
+    } else {
+      movie.getSessions().then(function(db_sessions) {
+        res.render('movie', {
+          movie: movie,
+          sessions: db_sessions
+        });
+      }, function(err) {                          // session search failed
+        handleError('Search for ' + movie.movie_name + '\'s sessions failed! :(', err, res);
+      });
+    }
+  }, function(err) {                              // movie search failed
+    handleError('Search for the movie failed! :(', err, res);
   });
 });
+
+function handleError(message, error, res) {
+  res.render('error', {
+    message: message,
+    error: error
+  });
+}
 
 module.exports = router;
