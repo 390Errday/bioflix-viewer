@@ -7,7 +7,7 @@ function mergeToStringifiedArray(string_array1, string_array2, callback) {
     var array1 = string_array1.split(',');
     var array2 = string_array2.split(',');
 
-    if(string_array1.length === string_array2.length) {
+    if(array1.length === array2.length) {
       var merged_array = [];
       for(var i=0; i<array1.length; i++) {
         var pair = [Number(array1[i]), Number(array2[i])];
@@ -15,7 +15,7 @@ function mergeToStringifiedArray(string_array1, string_array2, callback) {
       }
       callback(JSON.stringify(merged_array));
     } else {
-        callback(undefined, 'Pair does not have the same length. length1: ' + string_array1.length + ' length2: ' + string_array2.length);
+        callback(undefined, 'Pair does not have the same length. length1: ' + array1.length + ' length2: ' + array2.length);
     }
   } else {
     callback(undefined, 'Missing one or more values array.');
@@ -34,11 +34,11 @@ router.post('/', function(req, res, next) {
   var gsr_data = req.body.gsr_data;
   var gsr_times = req.body.gsr_times;
 
-  mergeToStringifiedArray(hr_data, hr_times, function(hr, err) {
+  mergeToStringifiedArray(hr_times, hr_data, function(hr, err) {
     if(err) {
       res.send('Error parsing heart rate data. ' + err);
     } else {
-      mergeToStringifiedArray(gsr_data, gsr_times, function(gsr, err) {
+      mergeToStringifiedArray(gsr_times, gsr_data, function(gsr, err) {
         if(err) {
           res.send('Error parsing galvanic skin response data. ' + err);
         } else {
