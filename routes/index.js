@@ -36,8 +36,8 @@ router.get('/:movie_name', function(req, res, next) {
     } else {
       movie.getSessions().then(function(db_sessions) {
         res.render('movie', {
-          movie: movie,
-          sessions: db_sessions
+          movie: movie.get({plain: true}),
+          sessions: db_sessions[0].get({plain: true})
         });
       }, function(err) {                          // session search failed
         handleError('Search for ' + movie.movie_name + '\'s sessions failed! :(', err, res);
