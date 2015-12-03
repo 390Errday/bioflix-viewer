@@ -4,16 +4,16 @@ module.exports = {
     return queryInterface.createTable('sessions', {
       viewer_name: {
         allowNull: false,
-        type: DataTypes.TEXT,
+        type: Sequelize.TEXT,
         primaryKey: true
       },
       start_time: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       end_time: {
         allowNull: false,
-        type: Sequelize.INTEGER
+        type: Sequelize.TEXT
       },
       hr: {
         allowNull: false,

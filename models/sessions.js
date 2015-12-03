@@ -6,10 +6,14 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     },
     start_time: {
-      type: DataTypes.INTEGER,
-      primaryKey: true
+      type: DataTypes.TEXT,
+      primaryKey: true,
+      isAlphanumeric: true
     },
-    end_time: DataTypes.INTEGER,
+    end_time: {
+      type: DataTypes.TEXT,
+      isAlphanumeric: true
+    },
     hr: {
       type: DataTypes.TEXT,
       is: {
