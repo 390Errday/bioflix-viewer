@@ -24,7 +24,6 @@ a.mdl-layout-title {
 .card-movie.mdl-card {
   width: 256px;
   height: 256px;
-  background: url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') center / cover;
 }
 .card-movie > .mdl-card__actions {
   height: 52px;
