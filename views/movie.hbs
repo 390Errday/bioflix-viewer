@@ -8,36 +8,71 @@
 $(function () {
   $('#container').highcharts({
     chart: {
-      type: 'line'
+      zoomType: 'xy'
     },
     title: {
       text: '{{movie.movie_name}}'
     },
-    subtitle: {
-      text: 'Source: WorldClimate.com'
+    tooltip: {
+        shared: true,
+        crosshairs: true
     },
-    xAxis: {
-      categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    },
-    yAxis: {
+    xAxis: [{
+      labels: {
+        format: '{value:%H:%M:%S}',
+        rotation: 45,
+        align: 'left'
+      },
+      crosshair: true
+    }],
+    yAxis: [{ // Primary yAxis
+      labels: {
+        format: '{value} bpm',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
+      },
       title: {
-        text: 'Temperature (°C)'
+        text: 'Heart Rate',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
       }
-    },
-    plotOptions: {
-      line: {
-        dataLabels: {
-          enabled: true
-        },
-        enableMouseTracking: false
-      }
+    }, { // Secondary yAxis
+      title: {
+        text: 'Galvanic Skin Response',
+        style: {
+          color: Highcharts.getOptions().colors[4]
+        }
+      },
+      labels: {
+        format: '{value} µS',
+        style: {
+          color: Highcharts.getOptions().colors[4]
+        }
+      },
+      opposite: true
+    }],
+    tooltip: {
+      shared: true
     },
     series: [{
       name: 'Heart Rate',
-      data: {{sessions.hr}}
+      type: 'line',
+      data: {{sessions.hr}},
+      tooltip: {
+        valueSuffix: ' bpm'
+      },
+      color: Highcharts.getOptions().colors[5]
     }, {
       name: 'Galvanic Skin Response',
-      data: {{sessions.gsr}}
+      type: 'line',
+      yAxis: 1,
+      data: {{sessions.gsr}},
+      tooltip: {
+        valueSuffix: ' µS'
+      },
+      color: Highcharts.getOptions().colors[4]
     }]
   });
 });
