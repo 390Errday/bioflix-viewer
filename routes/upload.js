@@ -3,15 +3,19 @@ var router = express.Router();
 var models = require("../models");
 
 function mergeToStringifiedArray(string_array1, string_array2, callback) {
+  console.log(string_array1);
+  console.log(string_array2);
+
   if(string_array1 && string_array2) {
     var array1 = string_array1.split(',');
     var array2 = string_array2.split(',');
+    console.log(array1);
+    console.log(array2);
 
     if(array1.length === array2.length) {
       var merged_array = [];
       for(var i=0; i<array1.length; i++) {
         var pair = [Number(array1[i]), Number(array2[i])];
-        console.log(pair);
         merged_array.push(pair);
       }
       callback(JSON.stringify(merged_array));
