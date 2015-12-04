@@ -29,6 +29,12 @@ function mergeToStringifiedArray(string_array1, string_array2, callback) {
 
 // POST new biometric data.
 router.post('/', function(req, res, next) {
+
+  console.log('request:', req);
+  console.log('body:', req.body);
+  console.log('hr_data:', req.body.hr_data);
+  console.log('hr_times:', req.body.hr_times);
+
   var movie = {
     movie_name: req.body.movie_name,
     poster_url: req.body.poster_url
