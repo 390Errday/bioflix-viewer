@@ -7,8 +7,25 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var upload = require('./routes/upload');
+var live = require('./routes/live');
 
 var app = express();
+
+// call socket.io to the app
+app.io = require('socket.io')();
+
+//start listen with socket.io
+app.io.on('connection', function(socket){
+  console.log('a user connected');
+
+  // receive from client (index.ejs) with socket.on
+  socket.on('new message', function(msg){
+    console.log('new message: ' + msg);
+    // send to client (index.ejs) with app.io.emit
+    // here it reacts direct after receiving a message from the client
+    app.io.emit('chat message' , msg);
+  });
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +39,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/live', live);
 app.use('/upload', upload);
+app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
