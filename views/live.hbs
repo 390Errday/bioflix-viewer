@@ -16,10 +16,10 @@ socket.on('new data', function(msg){
 
   switch(msg.type) {
     case 'hr':
-      chart.series[0].addPoint([msg.data, msg.time], true, false);
+      chart.series[0].addPoint([msg.time, msg.data], true, false);
       break;
     case 'gsr':
-      chart.series[1].addPoint([msg.data, msg.time], true, false);
+      chart.series[1].addPoint([msg.time, msg.data], true, false);
       break;
   }
 });
