@@ -14,16 +14,25 @@ var app = express();
 // call socket.io to the app
 app.io = require('socket.io')();
 
+var listeners = {};
+
 //start listen with socket.io
-app.io.on('connection', function(socket){
+app.io.on('connection', function(socket) {
   console.log('a user connected');
 
-  // receive from client (index.ejs) with socket.on
-  socket.on('new message', function(msg){
-    console.log('new message: ' + msg);
-    // send to client (index.ejs) with app.io.emit
-    // here it reacts direct after receiving a message from the client
-    app.io.emit('chat message' , msg);
+  // add to list of listeners
+  socket.on('listening', function(msg) {
+    console.log('new listener!', msg);
+    if(!listeners[msg.id]) listeners[msg.id] = [];
+    listeners[msg.id].push(socket);
+  });
+
+  // send new data to correct listeners
+  socket.on('new data', function(msg) {
+    console.log('new data!', msg);
+    for(listener of listeners[msg.id]) {
+      listener.emit('new data' , msg);
+    }
   });
 });
 

@@ -2,28 +2,28 @@
   <div class="card-graph mdl-card mdl-shadow--2dp">
     <div id="container"></div>
   </div>
-  <ul id="messages-area"></ul>
-  <form id="form" onsubmit="return false;">
-    <input id="new-message" type="text" /><button onclick="sendFunction()">Send</button>
-  </form>
 </div>
 
 <script>
-  var socket = io();
-  //define functions socket.emit sending to server (app.js) and socket.on receiving
-  // 'new message' is for the id of the socket and $('#new-message') is for the button
-  function sendFunction() {
-    socket.emit('new message', $('#new-message').val());
-    $('#new-message').val('');
-  }
-  // 'chat message' is for the id of the socket and $('#new-area') is for the text area
-  socket.on('chat message', function(msg){
-    $('#messages-area').append($('<li>').text(msg));
-    console.log('chat message!', msg);
-  });
-</script>
+var chart;
+var socket = io();
 
-<script>
+socket.emit('listening', { id: {{id}} });
+
+// 'chat message' is for the id of the socket and $('#new-area') is for the text area
+socket.on('new data', function(msg){
+  console.log('chat message!', msg);
+
+  switch(msg.type) {
+    case 'hr':
+      chart.series[0].addPoint([msg.data, msg.time], true, false);
+      break;
+    case 'gsr':
+      chart.series[1].addPoint([msg.data, msg.time], true, false);
+      break;
+  }
+});
+
 $(function () {
   $('#container').highcharts({
     chart: {
@@ -78,7 +78,6 @@ $(function () {
     series: [{
       name: 'Heart Rate',
       type: 'line',
-      data: {{sessions.hr}},
       tooltip: {
         valueSuffix: ' bpm'
       },
@@ -87,12 +86,12 @@ $(function () {
       name: 'Galvanic Skin Response',
       type: 'line',
       yAxis: 1,
-      data: {{sessions.gsr}},
       tooltip: {
         valueSuffix: ' µS'
       },
       color: Highcharts.getOptions().colors[4]
     }]
   });
+  chart = $("#container").highcharts();
 });
 </script>
