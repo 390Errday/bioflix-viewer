@@ -26,14 +26,12 @@ app.io.on('connection', function(socket) {
     if(!listeners[msg.id]) listeners[msg.id] = [];
     listeners[msg.id].push(socket);
   });
+});
 
-  // send new data to correct listeners
-  socket.on('new data', function(msg) {
-    console.log('new data!', msg);
-    for(listener of listeners[msg.id]) {
-      listener.emit('new data' , msg);
-    }
-  });
+// included for socket connection from routes
+app.use(function(req, res, next) {
+    req.listeners = listeners;
+    next();
 });
 
 // view engine setup

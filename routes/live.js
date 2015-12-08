@@ -16,7 +16,15 @@ router.post('/:id', function(req, res, next) {
     data: req.body.data,
     time: req.body.time
   }
-  req.app.io.emit('new data', msg);
+
+  // send new data to correct listeners
+  var listeners = req.listeners[msg.id];
+  if(listeners) {
+    for(listener of listeners) {
+      listener.emit('new data' , msg);
+    }
+  }
+
   res.send(200);
 });
 

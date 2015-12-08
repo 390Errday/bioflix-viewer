@@ -12,8 +12,6 @@ socket.emit('listening', { id: {{id}} });
 
 // 'chat message' is for the id of the socket and $('#new-area') is for the text area
 socket.on('new data', function(msg){
-  console.log('chat message!', msg);
-
   switch(msg.type) {
     case 'hr':
       chart.series[0].addPoint([msg.time, msg.data], true, false);
