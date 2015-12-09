@@ -11,8 +11,8 @@ for(hr of {{sessions.hr}}) {
   hr_time += ',' + hr[0];
   hr_data += ',' + hr[1];
 }
-hr_time = str.slice(0, -1);
-hr_data = str.slice(0, -1);
+hr_time = hr_time.slice(0, -1);
+hr_data = hr_data.slice(0, -1);
 
 var gsr_time = '';
 var gsr_data = '';
@@ -20,8 +20,8 @@ for(gsr of {{sessions.gsr}}) {
   gsr_time += ',' + gsr[0];
   gsr_data += ',' + gsr[1];
 }
-gsr_time = str.slice(0, -1);
-gsr_data = str.slice(0, -1);
+gsr_time = gsr_time.slice(0, -1);
+gsr_data = gsr_data.slice(0, -1);
 
 var request = {
   "movie_name": "{{movie.movie_name}}",
