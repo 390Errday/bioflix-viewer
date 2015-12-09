@@ -9,14 +9,14 @@ console.log('sessions hr', {{sessions.hr}});
 console.log('sessions gsr', {{sessions.gsr}});
 var hr_time = '';
 var hr_data = '';
-for(hr {{sessions.hr}}) {
+for(hr of {{sessions.hr}}) {
   hr_time += hr[0];
   hr_data += hr[1];
 }
 
 var gsr_time = '';
 var gsr_data = '';
-for(gsr {{sessions.gsr}}) {
+for(gsr of {{sessions.gsr}}) {
   gsr_time += hr[0];
   gsr_data += hr[1];
 }
