@@ -5,22 +5,22 @@
 </div>
 
 <script>
-var hr_time = '';
+var hr_times = '';
 var hr_data = '';
 for(hr of {{sessions.hr}}) {
-  hr_time += ',' + hr[0];
+  hr_times += ',' + hr[0];
   hr_data += ',' + hr[1];
 }
-hr_time = hr_time.slice(0, -1);
+hr_times = hr_times.slice(0, -1);
 hr_data = hr_data.slice(0, -1);
 
-var gsr_time = '';
+var gsr_times = '';
 var gsr_data = '';
 for(gsr of {{sessions.gsr}}) {
-  gsr_time += ',' + gsr[0];
+  gsr_times += ',' + gsr[0];
   gsr_data += ',' + gsr[1];
 }
-gsr_time = gsr_time.slice(0, -1);
+gsr_times = gsr_times.slice(0, -1);
 gsr_data = gsr_data.slice(0, -1);
 
 var request = {
