@@ -22,6 +22,7 @@ router.get('/:movie_name', function(req, res, next) {
       handleError(movie_name + ' does not exist in the database! :(', undefined, res);
     } else {
       movie.getSessions().then(function(db_sessions) {
+        console.log('Found movie:', movie.get({plain: true}));
         res.render('movie', {
           movie: movie.get({plain: true}),
           sessions: (db_sessions.length > 0) ? db_sessions[0].get({plain: true}) : undefined
