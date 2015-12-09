@@ -7,6 +7,24 @@
 <script>
 console.log('sessions hr', {{sessions.hr}});
 console.log('sessions gsr', {{sessions.gsr}});
+var hr_time = '';
+var hr_data = '';
+for(hr sessions.hr) {
+  hr_time += hr[0];
+  hr_data += hr[1];
+}
+
+var gsr_time = '';
+var gsr_data = '';
+for(gsr sessions.gsr) {
+  gsr_time += hr[0];
+  gsr_data += hr[1];
+}
+
+console.log('sessions hr data', hr_data);
+console.log('sessions hr time', hr_time);
+console.log('sessions gsr data', gsr_data);
+console.log('sessions gsr time', gsr_time);
 console.log('start', {{sessions.start_time}});
 console.log('end', {{sessions.end_time}});
 console.log('name', {{sessions.viewer_name}});
