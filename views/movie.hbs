@@ -5,6 +5,40 @@
 </div>
 
 <script>
+var hr_times = '';
+var hr_data = '';
+for(hr of {{sessions.hr}}) {
+  hr_times += ',' + hr[0];
+  hr_data += ',' + hr[1];
+}
+hr_times = hr_times.slice(0, -1);
+hr_data = hr_data.slice(0, -1);
+
+var gsr_times = '';
+var gsr_data = '';
+for(gsr of {{sessions.gsr}}) {
+  gsr_times += ',' + gsr[0];
+  gsr_data += ',' + gsr[1];
+}
+gsr_times = gsr_times.slice(0, -1);
+gsr_data = gsr_data.slice(0, -1);
+
+var request = {
+  "movie_name": "{{movie.movie_name}}",
+  "poster_url": "{{movie.poster_url}}",
+  "viewer_name": "{{sessions.viewer_name}}",
+  "start_time": "{{sessions.start_time}}",
+  "end_time": "{{sessions.end_time}}",
+  "hr_data": hr_data,
+  "hr_times": hr_times,
+  "gsr_data": gsr_data,
+  "gsr_times": gsr_times
+}
+
+console.log(request);
+</script>
+
+<script>
 $(function () {
   $('#container').highcharts({
     chart: {
