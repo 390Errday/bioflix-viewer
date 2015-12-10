@@ -42,7 +42,7 @@
     <paper-card>
       <div class="card-content">
         <div class="card-content-insides">
-          John Cena
+          {{movie_name}}
         </div>
       </div>
       <img class=image src="http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600">
@@ -54,7 +54,14 @@
       'use strict';
 
       Polymer({
-        is: 'movie-card'
+        is: 'movie-card',
+
+        // properties: {
+        //   movie_name: {
+        //     reflectToAttribute: true,
+        //     notify: true
+        //   }
+        // },
       });
     })();
   </script>

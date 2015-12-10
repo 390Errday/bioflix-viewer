@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<dom-module id="movies-page">
+<dom-module id="movies-page" >
 
   <style>
     .content {
@@ -15,10 +15,9 @@
 
   <template>
     <div class="content">
-      <movie-card class="movie"></movie-card>
-      <movie-card class="movie"></movie-card>
-      <movie-card class="movie"></movie-card>
-      <movie-card class="movie"></movie-card>
+      <template is="dom-repeat" items="{{movies}}" as="movie">
+        <movie-card class="movie" movie_name={{movie.movie_name}}></movie-card>
+    </template>
     </div>
   </template>
 
@@ -30,35 +29,41 @@
 
     is: 'movies-page',
 
+    ready: function() {
+       this.movies = [
+           {movie_name: 'John Cena'},
+           {movie_name: 'Dank Memes'},
+           {movie_name: '420'},
+           {movie_name: 'No-Scopé'}
+       ];
+
+       // setup animations AFTER the dom has rendered
+       this.async(function() {
+         var movies = Polymer.dom(this.root).querySelectorAll('.movie');
+         var moviesArray = Array.prototype.slice.call(movies);
+         console.log(moviesArray);
+         this.animationConfig = {
+           'entry': [{
+             name: 'cascaded-animation',
+             animation: 'scale-up-animation',
+             nodes: moviesArray
+           }],
+
+           'exit': [{
+             name: 'hero-animation',
+             id: 'hero',
+             fromPage: this
+           }, {
+             name: 'cascaded-animation',
+             animation: 'scale-down-animation'
+           }]
+         }
+       });
+     },
+
     behaviors: [
       Polymer.NeonSharedElementAnimatableBehavior
     ],
-
-    properties: {
-
-      animationConfig: {
-        value: function() {
-          var movies = Polymer.dom(this.root).querySelectorAll('.movie');
-          var moviesArray = Array.prototype.slice.call(movies);
-          return {
-            'entry': [{
-              name: 'cascaded-animation',
-              animation: 'scale-up-animation',
-              nodes: moviesArray
-            }],
-
-            'exit': [{
-              name: 'hero-animation',
-              id: 'hero',
-              fromPage: this
-            }, {
-              name: 'cascaded-animation',
-              animation: 'scale-down-animation'
-            }]
-          };
-        }
-      }
-    },
 
     listeners: {
       'click': '_onClick'
