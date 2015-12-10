@@ -58,7 +58,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Movie name -->
       <div class="bottom bottom-container center horizontal layout">
-        <div class="app-name">{{movie.movie_name}}</div>
+        <div class="app-name">{{movie_name}}</div>
       </div>
 
     </paper-toolbar>
@@ -81,10 +81,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'movie-page',
 
     ready: function() {
-      this.movie = {
-          movie_name: "John Cena",
-          poster_url: "http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600"
-      };
+      console.log(this.movie_name);
+      // this.movie = {
+      //     movie_name: this.movie_name,
+      //     poster_url: "http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600"
+      // };
     },
 
     behaviors: [

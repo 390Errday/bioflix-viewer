@@ -41,7 +41,6 @@
        this.async(function() {
          var movies = Polymer.dom(this.root).querySelectorAll('.movie');
          var moviesArray = Array.prototype.slice.call(movies);
-         console.log(moviesArray);
          this.animationConfig = {
            'entry': [{
              name: 'cascaded-animation',
@@ -89,7 +88,8 @@
         }
         this.animationConfig['exit'][1].nodes = nodesToScale;
 
-        this.fire('movie-click');
+        var selected = $(target).find('.card-content-insides').text().trim();
+        this.fire('movie-click', { movie_name: selected });
       }
     }
 
