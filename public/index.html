@@ -73,7 +73,7 @@
     <!-- Main Content -->
       <neon-animated-pages id="pages" attr-for-selected="data-route" selected="0">
         <movies-page data-route="0" on-movie-click="_onMovieClick"></movies-page>
-        <movie-page data-route="1" on-back-click="_onBackClick" movie_name="{{movie_name}}"></movie-page>
+        <movie-page data-route="1" on-back-click="_onBackClick" movie="{{movie}}"></movie-page>
       </neon-animated-pages>
 
     </paper-scroll-header-panel>
@@ -91,7 +91,7 @@
     var scope = document.querySelector('template[is="dom-bind"]');
 
     scope._onMovieClick = function(event) {
-      this.movie_name = event.detail.movie_name;
+      this.movie = event.detail.movie;
       this.$.pages.selected = 1;
     };
 

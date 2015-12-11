@@ -16,7 +16,7 @@
   <template>
     <div class="content">
       <template is="dom-repeat" items="{{movies}}" as="movie">
-        <movie-card class="movie" movie_name={{movie.movie_name}}></movie-card>
+        <movie-card class="movie" movie={{movie}}></movie-card>
     </template>
     </div>
   </template>
@@ -31,10 +31,10 @@
 
     ready: function() {
        this.movies = [
-           {movie_name: 'John Cena'},
-           {movie_name: 'Dank Memes'},
-           {movie_name: '420'},
-           {movie_name: 'No-Scopé'}
+           {movie_name: 'John Cena', poster_url: 'http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600'},
+           {movie_name: 'Dank Memes', poster_url: 'http://at-cdn-s01.audiotool.com/2015/08/02/users/jojceec/avatar256x256-051a64890f544fc59f3fc75b56a26e2c.jpg'},
+           {movie_name: '420', poster_url: 'http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600'},
+           {movie_name: 'No-Scopé', poster_url: 'http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600'}
        ];
 
        // setup animations AFTER the dom has rendered
@@ -88,8 +88,13 @@
         }
         this.animationConfig['exit'][1].nodes = nodesToScale;
 
-        var selected = $(target).find('.card-content-insides').text().trim();
-        this.fire('movie-click', { movie_name: selected });
+        var movie_name = $(target).find('.card-content-insides').text().trim();
+        var poster_url = $(target).find('img')[1].src
+        var movie = {
+          movie_name: movie_name,
+          poster_url: poster_url
+        }
+        this.fire('movie-click', { movie: movie });
       }
     }
 

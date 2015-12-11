@@ -1,55 +1,43 @@
-<!--
-Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
 <dom-module id="movie-page">
+<style>
+  .header {
+    /*background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    /*background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(59%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    /*background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    /*background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    /*background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    /*background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;*/
+    height: 40%;
+  }
+
+  .content {
+    text-align: center;
+    padding: 8px;
+  }
+
+  .square {
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    margin: 8px;
+    background: var(--color-two);
+  }
+
+  :host {
+    z-index: 1;
+    top: 0vh;
+    width: 100%;
+    position: fixed;
+  }
+  </style>
+
   <template>
-    <style>
-      .header {
-        background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(59%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.65))), url('http://www.skrenta.com/images/stackoverflow.jpg') no-repeat;
-        background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;
-        background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;
-        background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;
-        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url('http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600') no-repeat;
-
-
-        height: 40%;
-        /*background: url("http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600"), linear-gradient(red, yellow);;*/
-        background-repeat: no-repeat;
-        background-size: 100%;
-        background-position: center;
-      }
-
-      .content {
-        text-align: center;
-        padding: 8px;
-      }
-
-      .square {
-        display: inline-block;
-        width: 150px;
-        height: 150px;
-        margin: 8px;
-        background: var(--color-two);
-      }
-
-      :host {
-        z-index: 1;
-        top: 0vh;
-        width: 100%;
-        position: fixed;
-      }
-    </style>
-
     <!-- Movie Toolbar -->
-    <paper-toolbar id="header" class="header tall">
+    <paper-toolbar id="header" class="header tall"
+      style$="background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 59%, rgba(0, 0, 0, 0.65) 100%), url({{movie.poster_url}}) no-repeat;
+      background-position: center; background-size: 100%;">
+
       <paper-icon-button icon="arrow-back" alt="arrow-back" title="arrow-back"></paper-icon-button>
       <span class="flex"></span>
 
@@ -58,7 +46,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       <!-- Movie name -->
       <div class="bottom bottom-container center horizontal layout">
-        <div class="app-name">{{movie_name}}</div>
+        <div class="app-name">{{movie.movie_name}}</div>
       </div>
 
     </paper-toolbar>
@@ -81,7 +69,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     is: 'movie-page',
 
     ready: function() {
-      console.log(this.movie_name);
       // this.movie = {
       //     movie_name: this.movie_name,
       //     poster_url: "http://images.techtimes.com/data/images/full/83420/john-cena.jpg?w=600"
