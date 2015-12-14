@@ -5,37 +5,59 @@
 </div>
 
 <script>
-var hr_times = '';
-var hr_data = '';
-for(hr of {{sessions.hr}}) {
-  hr_times += ',' + hr[0];
-  hr_data += ',' + hr[1];
-}
-hr_times = hr_times.slice(0, -1);
-hr_data = hr_data.slice(0, -1);
-
-var gsr_times = '';
-var gsr_data = '';
-for(gsr of {{sessions.gsr}}) {
-  gsr_times += ',' + gsr[0];
-  gsr_data += ',' + gsr[1];
-}
-gsr_times = gsr_times.slice(0, -1);
-gsr_data = gsr_data.slice(0, -1);
-
-var request = {
-  "movie_name": "{{movie.movie_name}}",
-  "poster_url": "{{movie.poster_url}}",
-  "viewer_name": "{{sessions.viewer_name}}",
-  "start_time": "{{sessions.start_time}}",
-  "end_time": "{{sessions.end_time}}",
-  "hr_data": hr_data,
-  "hr_times": hr_times,
-  "gsr_data": gsr_data,
-  "gsr_times": gsr_times
+function unmergeArray(merged, callback) {
+  if(!merged){
+    callback('', '');
+  }
+  else {
+    var data = '';
+    var times = '';
+    for(pair of merged) {
+      data += ',' + pair[1];
+      times += ',' + pair[0];
+    }
+    data = data.slice(1);
+    times = times.slice(1);
+    callback(data, times)
+  }
 }
 
-console.log(request);
+var merged = {};
+
+{{#if sessions.hr}}
+  merged.hr = {{sessions.hr}};
+{{/if}}
+
+{{#if sessions.gsr}}
+  merged.gsr = {{sessions.gsr}};
+{{/if}}
+
+{{#if sessions.temp}}
+  merged.temp = {{sessions.temp}};
+{{/if}}
+
+unmergeArray(merged.hr, function(hr_data, hr_times){
+  unmergeArray(merged.gsr, function(gsr_data, gsr_times){
+    unmergeArray(merged.temp, function(temp_data, temp_times){
+      var request = {
+        "movie_name": "{{movie.movie_name}}",
+        "poster_url": "{{movie.poster_url}}",
+        "viewer_name": "{{sessions.viewer_name}}",
+        "start_time": "{{sessions.start_time}}",
+        "end_time": "{{sessions.end_time}}",
+        "hr_data": hr_data,
+        "hr_times": hr_times,
+        "gsr_data": gsr_data,
+        "gsr_times": gsr_times,
+        "temp_data": temp_data,
+        "temp_times": temp_times
+      }
+
+      console.log(request);                     // easier to read
+      console.log(JSON.stringify(request));     // easier to reupload
+    });
+  });
+});
 </script>
 
 <script>
@@ -59,7 +81,10 @@ $(function () {
       },
       crosshair: true
     }],
-    yAxis: [{ // Primary yAxis
+    yAxis: [
+
+{{#if sessions.hr}}
+      { // Primary yAxis
       labels: {
         format: '{value} bpm',
         style: {
@@ -72,7 +97,12 @@ $(function () {
           color: Highcharts.getOptions().colors[5]
         }
       }
-    }, { // Secondary yAxis
+    }
+{{/if}}
+
+{{#if sessions.gsr}}
+{{#if sessions.hr}} , {{/if}}
+    { // Secondary yAxis
       title: {
         text: 'Galvanic Skin Response',
         style: {
@@ -86,11 +116,40 @@ $(function () {
         }
       },
       opposite: true
-    }],
+    }
+{{/if}}
+
+{{#if sessions.temp}}
+{{#if sessions.hr}} // threw this in quick becaue hbs doesn't have 'or'
+  {{#if sessions.gsr}} , {{else}} , {{/if}} // hr and gsr, hr alone
+{{else}}
+  {{#if sessions.gsr}} , {{else}}   {{/if}} // gsr alone, nothing
+{{/if}}
+    { // Third yAxis
+      title: {
+        text: 'Skin Temperature',
+        style: {
+          color: Highcharts.getOptions().colors[7]
+        }
+      },
+      labels: {
+        format: '{value} °F',
+        style: {
+          color: Highcharts.getOptions().colors[7]
+        }
+      },
+      opposite: true
+    }
+{{/if}}
+
+    ],
     tooltip: {
       shared: true
     },
-    series: [{
+    series: [
+
+{{#if sessions.hr}}
+    {
       name: 'Heart Rate',
       type: 'line',
       data: {{sessions.hr}},
@@ -98,16 +157,48 @@ $(function () {
         valueSuffix: ' bpm'
       },
       color: Highcharts.getOptions().colors[5]
-    }, {
+    }
+{{/if}}
+
+{{#if sessions.gsr}}
+{{#if sessions.hr}} , {{/if}}
+    {
       name: 'Galvanic Skin Response',
       type: 'line',
-      yAxis: 1,
+      yAxis: {{#if sessions.hr}} 1 {{else}} 0 {{/if}},
       data: {{sessions.gsr}},
       tooltip: {
         valueSuffix: ' µS'
       },
       color: Highcharts.getOptions().colors[4]
-    }]
-  });
+    }
+{{/if}}
+
+{{#if sessions.temp}}
+{{#if sessions.hr}} // threw this in quick becaue hbs doesn't have 'or'
+  {{#if sessions.gsr}} , {{else}} , {{/if}} // hr and gsr, hr alone
+{{else}}
+  {{#if sessions.gsr}} , {{else}}   {{/if}} // gsr alone, nothing
+{{/if}}
+    {
+      name: 'Skin Temperature',
+      type: 'line',
+      yAxis:
+      {{#if sessions.hr}} // threw this in quick becaue hbs doesn't have 'or'
+        {{#if sessions.gsr}} 2 {{else}} 1 {{/if}} // hr and gsr, hr alone
+      {{else}}
+        {{#if sessions.gsr}} 1 {{else}} 0 {{/if}} // gsr alone, nothing
+      {{/if}}
+      ,
+      data: {{sessions.temp}},
+      tooltip: {
+        valueSuffix: ' °F'
+      },
+      color: Highcharts.getOptions().colors[7]
+    }
+{{/if}}
+    ]
+  }
+);
 });
 </script>
