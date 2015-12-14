@@ -19,6 +19,9 @@ socket.on('new data', function(msg){
     case 'gsr':
       chart.series[1].addPoint([msg.time, msg.data], true, false);
       break;
+    case 'temp':
+      chart.series[2].addPoint([msg.time, msg.data], true, false);
+      break;
   }
 });
 
@@ -69,6 +72,20 @@ $(function () {
         }
       },
       opposite: true
+    }, { // Third yAxis
+      title: {
+        text: 'Skin Temperature',
+        style: {
+          color: Highcharts.getOptions().colors[7]
+        }
+      },
+      labels: {
+        format: '{value} °F',
+        style: {
+          color: Highcharts.getOptions().colors[7]
+        }
+      },
+      opposite: true
     }],
     tooltip: {
       shared: true
@@ -88,6 +105,14 @@ $(function () {
         valueSuffix: ' µS'
       },
       color: Highcharts.getOptions().colors[4]
+    }, {
+      name: 'Skin Temperature',
+      type: 'line',
+      yAxis: 2,
+      tooltip: {
+        valueSuffix: ' °F'
+      },
+      color: Highcharts.getOptions().colors[7]
     }]
   });
   chart = $("#container").highcharts();

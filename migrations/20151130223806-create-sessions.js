@@ -17,11 +17,12 @@ module.exports = {
         type: Sequelize.TEXT
       },
       hr: {
-        allowNull: false,
         type: Sequelize.TEXT
       },
       gsr: {
-        allowNull: false,
+        type: Sequelize.TEXT
+      },
+      temp: {
         type: Sequelize.TEXT
       },
       createdAt: {

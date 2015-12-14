@@ -27,6 +27,13 @@ module.exports = function(sequelize, DataTypes) {
         args: ["\[(\[(\d|\.)+,(\d|\.)+\])?(,\[(\d|\.)+,(\d|\.)+\])*\]"],
         msg: "Must be the string version of an array containing arrays of size 2. Each value must be a number. No spaces aloud."
       }
+    },
+    temp: {
+      type: DataTypes.TEXT,
+      is: {
+        args: ["\[(\[(\d|\.)+,(\d|\.)+\])?(,\[(\d|\.)+,(\d|\.)+\])*\]"],
+        msg: "Must be the string version of an array containing arrays of size 2. Each value must be a number. No spaces aloud."
+      }
     }
   }, {
     classMethods: {

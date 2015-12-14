@@ -3,14 +3,9 @@ var router = express.Router();
 var models = require("../models");
 
 function mergeToStringifiedArray(string_array1, string_array2, callback) {
-  console.log(string_array1);
-  console.log(string_array2);
-
   if(string_array1 && string_array2) {
     var array1 = string_array1.split(',');
     var array2 = string_array2.split(',');
-    console.log(array1);
-    console.log(array2);
 
     if(array1.length === array2.length) {
       var merged_array = [];
@@ -23,53 +18,64 @@ function mergeToStringifiedArray(string_array1, string_array2, callback) {
         callback(undefined, 'Pair does not have the same length. length1: ' + array1.length + ' length2: ' + array2.length);
     }
   } else {
-    callback(undefined, 'Missing one or more values array.');
+    callback(undefined);
   }
+}
+
+function parseRequest(body, callback) {
+  mergeToStringifiedArray(body.hr_times, body.hr_data, function(hr, hr_err) {
+    mergeToStringifiedArray(body.gsr_times, body.gsr_data, function(gsr, gsr_err) {
+      mergeToStringifiedArray(body.temp_times, body.temp_data, function(temp, temp_err) {
+        if(hr_err || gsr_err || temp_err) {
+
+          var error = {
+            hr_err: hr_err,
+            gsr_err: gsr_err,
+            temp_err: temp_err
+          }
+          callback(undefined, undefined, error);
+
+        } else if(!hr && !gsr && !temp) {
+
+          var error = 'Request did not include any heart rate, galvanic skin response, or skin temperature data. Session will not be added.';
+          callback(undefined, undefined, error);
+
+        } else {
+
+          var movie = {
+            movie_name: body.movie_name,
+            poster_url: body.poster_url
+          };
+          var session = {
+            viewer_name: body.viewer_name,
+            start_time: Number(body.start_time),
+            end_time: Number(body.end_time),
+            hr: hr,
+            gsr: gsr,
+            temp: temp
+          };
+          callback(movie, session);
+
+        }
+      });
+    });
+  });
 }
 
 // POST new biometric data.
 router.post('/', function(req, res, next) {
-
-  console.log('request:', req);
   console.log('body:', req.body);
-  console.log('hr_data:', req.body.hr_data);
-  console.log('hr_times:', req.body.hr_times);
-
-  var movie = {
-    movie_name: req.body.movie_name,
-    poster_url: req.body.poster_url
-  };
-
-  var hr_data = req.body.hr_data;
-  var hr_times = req.body.hr_times;
-  var gsr_data = req.body.gsr_data;
-  var gsr_times = req.body.gsr_times;
-
-  mergeToStringifiedArray(hr_times, hr_data, function(hr, err) {
+  parseRequest(req.body, function(movie, session, err) {
     if(err) {
-      res.send('Error parsing heart rate data. ' + err);
+      res.send('Error parsing data: ' + err);
     } else {
-      mergeToStringifiedArray(gsr_times, gsr_data, function(gsr, err) {
+      console.log('movie:', movie);
+      console.log('session:', session);
+      handleAddToDatabase(movie, session, function(result, err){
         if(err) {
-          res.send('Error parsing galvanic skin response data. ' + err);
+          res.send(err);
         } else {
-          var session = {
-            viewer_name: req.body.viewer_name,
-            start_time: Number(req.body.start_time),
-            end_time: Number(req.body.end_time),
-            hr: hr,
-            gsr: gsr
-          };
-
-          console.log('movie:', movie);
-          console.log('session:', session);
-          handleAddToDatabase(movie, session, function(result, err){
-            if(err) {
-              res.send(err);
-            } else {
-              res.send(result);
-            }
-          });
+          res.send(result);
         }
       });
     }
