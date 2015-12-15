@@ -61,8 +61,38 @@ unmergeArray(merged.hr, function(hr_data, hr_times){
 </script>
 
 <script>
-$(function () {
-  $('#container').highcharts({
+function average(data) {
+  var avg = [];
+  var beginning_index;
+  var sum = 0;
+
+  for(var i=0; i<data.length; i++) {
+    var current = data[i];
+
+    var isLastPoint = (i === data.length-1);
+
+    if(!beginning_index) {
+      beginning_index = i;
+      sum += current[1];
+    } else if(current[0] >= (data[beginning_index][0] + 180000) || isLastPoint) {
+      var local_avg = sum/(i-beginning_index);
+
+      avg.push([data[beginning_index][0], local_avg]);
+      if(isLastPoint) { //complete the end of the graph
+        avg.push([data[i][0], local_avg]);
+      }
+
+      beginning_index = undefined;
+      sum = 0;
+    } else {
+      sum += current[1];
+    }
+  }
+
+  return avg;
+}
+
+$('#container').highcharts({
     chart: {
       zoomType: 'xy'
     },
@@ -157,6 +187,15 @@ $(function () {
         valueSuffix: ' bpm'
       },
       color: Highcharts.getOptions().colors[5]
+    }, {
+      name: 'Heart Rate Average',
+      type: 'line',
+      step: 'left',
+      data: average({{sessions.hr}}),
+      tooltip: {
+        valueSuffix: ' bpm'
+      },
+      color: Highcharts.getOptions().colors[1]
     }
 {{/if}}
 
@@ -198,7 +237,5 @@ $(function () {
     }
 {{/if}}
     ]
-  }
-);
 });
 </script>
