@@ -1,6 +1,12 @@
 <div class="graph-section">
   <div class="card-graph mdl-card mdl-shadow--2dp">
-    <div id="container"></div>
+    <div id="raw" class="container"></div>
+  </div>
+</div>
+
+<div class="graph-section">
+  <div class="card-graph mdl-card mdl-shadow--2dp">
+    <div id="hr" class="container"></div>
   </div>
 </div>
 
@@ -92,7 +98,7 @@ function average(data) {
   return avg;
 }
 
-$('#container').highcharts({
+$('#raw').highcharts({
     chart: {
       zoomType: 'xy'
     },
@@ -187,15 +193,6 @@ $('#container').highcharts({
         valueSuffix: ' bpm'
       },
       color: Highcharts.getOptions().colors[5]
-    }, {
-      name: 'Heart Rate Average',
-      type: 'line',
-      step: 'left',
-      data: average({{sessions.hr}}),
-      tooltip: {
-        valueSuffix: ' bpm'
-      },
-      color: Highcharts.getOptions().colors[1]
     }
 {{/if}}
 
@@ -237,5 +234,75 @@ $('#container').highcharts({
     }
 {{/if}}
     ]
+});
+
+$('#hr').highcharts({
+    chart: {
+      zoomType: 'xy'
+    },
+    title: {
+      text: '{{movie.movie_name}}'
+    },
+    tooltip: {
+        shared: true,
+        crosshairs: true
+    },
+    xAxis: [{
+      labels: {
+        format: '{value:%H:%M:%S}',
+        rotation: 45,
+        align: 'left'
+      },
+      crosshair: true
+    }],
+    yAxis: [
+      { // Primary yAxis
+      labels: {
+        format: '{value} bpm',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
+      },
+      title: {
+        text: 'Heart Rate',
+        style: {
+          color: Highcharts.getOptions().colors[5]
+        }
+      }
+    }],
+    tooltip: {
+      shared: true
+    },
+    series: [{
+      name: 'Heart Rate Average',
+      type: 'line',
+      step: 'left',
+      data: average({{sessions.hr}}),
+      tooltip: {
+        valueSuffix: ' bpm'
+      },
+      zones: [{
+        value: 65,
+        color: '#99ccff'
+      },{
+        value: 75,
+        color: '#aaaad5'
+      },{
+        value: 77.5,
+        color: '#bb88aa'
+      },{
+        value: 80,
+        color: '#cc6680'
+      },{
+        value: 82.5,
+        color: '#dd4455'
+      },{
+        value: 85,
+        color: '#ee222b'
+      },{
+        value: 200,
+        color: '#ff0000'
+      }]
+    }]
 });
 </script>
